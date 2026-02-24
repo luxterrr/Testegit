@@ -8,6 +8,7 @@ public class aula03 {
         c1.carga = 50;
         c1.tampada = true;
         c1.status();
+        c1.destampar();
 
 
 
