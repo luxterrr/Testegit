@@ -1,6 +1,5 @@
 package EXERCICIO01;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EX01 {
@@ -12,35 +11,22 @@ public class EX01 {
 
         System.out.printf("VALOR: %.2f " , valor);
         System.out.println("");
-        /*int cedula100;
-        int cedula200;
-        int cedula50;
-        int cedula20;
-        int cedula10;
-        int cedula5;
-        int cedula2;
-        int moeda1;
-        int moeda50;
-        int moeda25;
-        int moeda10;
-        int moeda05;
-        int moeda01;
+        valor *= 100;
 
-         */
-        double [] numeros = {200, 100, 50, 20, 10, 5, 2 , 1, 0.5, 0.25, 0.10, 0.05, 0.01 };
+        int [] numeros = {20000, 10000, 5000, 2000, 1000, 500, 200 , 100, 50, 25, 10, 5, 1 };
 
-        for (int contador = 0; contador < 13; contador ++ ) {
-            int cedulas =  (int) ( valor / numeros[contador] );
-            if (cedulas>=1) {
+        for (int contador = 0; contador < numeros.length && valor > 0 ; contador ++ ) {
+
+            int cedulas = (int) ( valor / numeros[contador] );
+            if (cedulas >= 1) {
                 valor -= cedulas * numeros[contador];
-                if (contador > 7) {
-                    System.out.println("MOEDAS DE " + numeros[contador] + ": " + cedulas);
+                if (numeros[contador] >= 200 ) {
+                    System.out.println("CEDULAS DE " + numeros[contador] / 100  + ": " + cedulas);
                 } else {
-                    System.out.println("CEDULAS DE " + numeros[contador] + ": " + cedulas);
+                    System.out.println("MOEDAS DE " + numeros[contador] / 100.0  + ": " + cedulas);
                 }
 
             }
-            cedulas = 0;
 
         }
         System.out.println("GG");
