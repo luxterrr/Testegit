@@ -9,7 +9,7 @@ public class Video implements AcoesVideo{
     private boolean reproduzindo;
     private int avaliacao;
 
-    public Video(String titulo) {
+    public Video(String titulo) {//construtor
         this.titulo = titulo;
         this.avaliacao = 1;
         this.reproduzindo = false;
@@ -41,7 +41,7 @@ public class Video implements AcoesVideo{
         this.likes = likes;
     }
 
-    public boolean isReproduzindo() {
+    public boolean getReproduzindo() {
         return reproduzindo;
     }
 
@@ -54,7 +54,9 @@ public class Video implements AcoesVideo{
     }
 
     public void setAvaliacao(int avaliacao) {
-        this.avaliacao = avaliacao;
+        int nova;
+        nova = (int) ((this.avaliacao + avaliacao)/this.views);
+        this.avaliacao = nova;
     }
 
     @Override

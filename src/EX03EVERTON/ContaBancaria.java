@@ -2,15 +2,18 @@ package EX03EVERTON;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ContaBancaria {
     private String nome;
     private String agencia;
     private String numeroConta;
-    private BigDecimal saldo;
-    private String status;
+    private BigDecimal saldo ;
+    private boolean status;
 
     static ArrayList<ContaBancaria> listaContas = new ArrayList<>();
+    //Map<String,String>acharConta = new LinkedHashMap<>();
 
     public void status(){
         System.out.println("AGENCIA: " + getAgencia());
@@ -23,7 +26,8 @@ public class ContaBancaria {
         this.nome = nome;
         this.agencia = agencia;
         this.numeroConta = numeroConta;
-        this.saldo = saldo;
+        this.saldo = BigDecimal.ZERO;
+        this.status =true;
     }
 
     public String getNome() {
@@ -44,15 +48,15 @@ public class ContaBancaria {
         this.numeroConta = numeroConta;
     }
 
-    public BigDecimal getSaldo() {
+    public  BigDecimal getSaldo() {
         return saldo;
     }
-    public void setSaldo(BigDecimal saldo) { this.saldo = saldo;}
+    public  void setSaldo(BigDecimal saldo) { this.saldo = saldo;}
 
-    public String getStatus() {
+    public boolean getStatus() {
         return status;
     }
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 }

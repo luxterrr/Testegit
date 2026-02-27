@@ -4,7 +4,7 @@ public class Gafanhoto extends Pessoa{
     private int totalAssistido;
     private String login;
 
-    public Gafanhoto(String nome, String sexo, int idade, String login) {
+    public Gafanhoto(String nome, String sexo, int idade, String login) {//construtor
         super(nome, sexo, idade);
         this.totalAssistido = 0;
         this.login = login;

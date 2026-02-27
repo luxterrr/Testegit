@@ -6,7 +6,7 @@ public abstract class Pessoa {
     protected int idade;
     protected int exp;
 
-    public Pessoa(String nome, String sexo, int idade) {
+    public Pessoa(String nome, String sexo, int idade) {//construtor
         this.nome = nome;
         this.sexo = sexo;
         this.idade = idade;
