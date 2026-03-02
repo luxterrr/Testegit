@@ -1,9 +1,7 @@
 package EX03EVERTON;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ContaBancaria {
     private String nome;
@@ -12,21 +10,13 @@ public class ContaBancaria {
     private BigDecimal saldo ;
     private boolean status;
 
-    static ArrayList<ContaBancaria> listaContas = new ArrayList<>();
-    //Map<String,String>acharConta = new LinkedHashMap<>();
-
-    public void status(){
-        System.out.println("AGENCIA: " + getAgencia());
-        System.out.println("CONTA: " + getNumeroConta());
-        System.out.println("NOME: " + getNome());
-        System.out.println("SALDO: " + getSaldo());
-    }
+    static ArrayList<ContaBancaria> listaContas = new ArrayList<ContaBancaria>();
 
     public ContaBancaria(String nome, String agencia, String numeroConta, BigDecimal saldo) {
         this.nome = nome;
         this.agencia = agencia;
         this.numeroConta = numeroConta;
-        this.saldo = BigDecimal.ZERO;
+        this.saldo = saldo;
         this.status =true;
     }
 
@@ -48,7 +38,7 @@ public class ContaBancaria {
         this.numeroConta = numeroConta;
     }
 
-    public  BigDecimal getSaldo() {
+    public BigDecimal getSaldo() {
         return saldo;
     }
     public  void setSaldo(BigDecimal saldo) { this.saldo = saldo;}
@@ -58,5 +48,47 @@ public class ContaBancaria {
     }
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public static int getInfo() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("NUMERO DA CONTA: ");
+        String getConta = sc.next();
+        System.out.print("NUMERO DA AGENCIA: ");
+        String getAgencia = sc.next();
+
+        Optional<ContaBancaria> conta = Optional.ofNullable(ContaBancaria.listaContas.stream()
+                .filter(contaBancaria -> Objects.equals(contaBancaria.getAgencia(), getAgencia) && Objects.equals(contaBancaria.getNumeroConta(), getConta))
+                .findFirst().orElse(null));
+        if (conta.isPresent()) {
+            System.out.println("CONTA ENCONTRADA");
+            return ContaBancaria.listaContas.indexOf(conta.get());
+
+        } else {
+            System.out.println("CONTA INEXISTENTE");
+            return -1;
+        }
+    }
+    public static int getTransfer() {
+        System.out.println("DIGITE AS INFORMACOES DA 1 CONTA");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("NUMERO DA CONTA: ");
+        String getConta = sc.next();
+        System.out.print("NUMERO DA AGENCIA: ");
+        String getAgencia = sc.next();
+
+        Optional<ContaBancaria> conta = Optional.ofNullable(ContaBancaria.listaContas.stream()
+                .filter(contaBancaria -> Objects.equals(contaBancaria.getAgencia(), getAgencia) && Objects.equals(contaBancaria.getNumeroConta(), getConta))
+                .findFirst().orElse(null));
+        if (conta.isPresent()) {
+            System.out.println("CONTA ENCONTRADA");
+            return ContaBancaria.listaContas.indexOf(conta.get());
+
+        } else {
+            System.out.println("CONTA INEXISTENTE");
+            return -1;
+        }
+
+
     }
 }
