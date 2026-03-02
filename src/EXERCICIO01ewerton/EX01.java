@@ -1,4 +1,4 @@
-package EXERCICIO01everton;
+package EXERCICIO01ewerton;
 
 import java.math.BigDecimal;
 import java.util.Scanner;

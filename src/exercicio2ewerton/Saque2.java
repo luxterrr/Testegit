@@ -1,4 +1,4 @@
-package exercicio2everton;
+package exercicio2ewerton;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
