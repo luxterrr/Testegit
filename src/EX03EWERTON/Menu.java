@@ -14,27 +14,13 @@ public class Menu {
             int opcao = opc.nextInt();
             try {
                 switch (opcao) {
-                    case 0:
-                        System.exit(0);
-                        break;
-                    case 1:
-                        Acoes.abrirConta();
-                        break;
-                    case 2:
-                        Acoes.fecharConta();
-                        break;
-                    case 3:
-                        Acoes.transferir();
-                        break;
-                    case 4:
-                        Acoes.sacar();
-                        break;
-                    case 5:
-                        Acoes.depositar();
-                        break;
-                    case 6:
-                        Acoes.listar();
-                        break;
+                    case 0: System.exit(0);break;
+                    case 1: Acoes.abrirConta();break;
+                    case 2: Acoes.fecharConta();break;
+                    case 3: Acoes.transferir();break;
+                    case 4: Acoes.sacar();break;
+                    case 5: Acoes.depositar();break;
+                    case 6: Acoes.listar();break;
                 }
             } catch (Exception e) {
                 System.out.println("ERRO REGISTRADO, VOLTANDO AO MENU INICIAL");

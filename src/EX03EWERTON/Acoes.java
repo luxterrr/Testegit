@@ -1,35 +1,20 @@
 package EX03EWERTON;
 
 import java.math.BigDecimal;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Scanner;
-
-import static EX03EWERTON.ContaBancaria.getInfo;
 import static EX03EWERTON.ContaBancaria.listaContas;
-
+import static EX03EWERTON.GetDados.getInfo;
+import static EX03EWERTON.ScannerAcoes.*;
 
 public class Acoes {
 
     public static void abrirConta() {
-        System.out.println("--ABERTURA DE CONTA--");
-        Scanner sc = new Scanner(System.in);
-        System.out.print("No AGENCIA: ");
-        String agencia = sc.next();
-        System.out.print("No Conta  : ");
-        String numeroConta = sc.next();
-        System.out.print("SALDO     : ");
-        BigDecimal saldo = sc.nextBigDecimal();
-        System.out.print("Nome      : ");
-        String nome = sc.next();
-
-        Optional<ContaBancaria> contido = ContaBancaria.listaContas.stream()
-                .filter(contaBancaria -> Objects.equals(contaBancaria.getAgencia(), agencia) && Objects.equals(contaBancaria.getNumeroConta(), numeroConta))
-                .findFirst();
-        if (contido.isPresent()) {
+        ContaBancaria novaConta = getAbertura();
+        boolean existe = ContaBancaria.listaContas.stream() //verificacao para ver se ha conta existente com mesmos dados
+                .anyMatch(contaBancaria -> contaBancaria.getNumeroConta().equals(novaConta.getNumeroConta()));
+        if (existe) {
             System.out.println("ERRO NO CADASTRO: CONTA JA EXISTENTE, MUDE O NUMERO DA CONTA OU AGENCIA");
         } else {
-            ContaBancaria.listaContas.add(new ContaBancaria(nome, agencia, numeroConta, saldo, Status.ABERTA));
+            ContaBancaria.listaContas.add(novaConta);
             System.out.println("CONTA ABERTA");
         }
     }
@@ -41,8 +26,8 @@ public class Acoes {
             int i = getInfo();
             ContaBancaria conta = listaContas.get(i);
             if (conta.getSaldo().compareTo(BigDecimal.valueOf(0)) == 0 && conta.getStatus() == Status.ABERTA) {
-                Status teste = Status.FECHADA;
-                conta.setStatus(teste);
+                Status status = Status.FECHADA;
+                conta.setStatus(status);
                 System.out.println("CONTA FECHADA");
             } else if (conta.getStatus() == Status.FECHADA) {
                 System.out.println("CONTA JA ESTA FECHADA");
@@ -61,9 +46,8 @@ public class Acoes {
             if (conta.getStatus() == Status.FECHADA) {
                 System.out.println("CONTA FECHADA, IMPOSSIVEL REALIZAR UM SAQUE");
             } else {
-                Scanner sc = new Scanner(System.in);
                 System.out.println("QUANTO DESEJA SACAR: ");
-                BigDecimal saque = sc.nextBigDecimal();
+                BigDecimal saque = getSaque();
 
                 if (saque.compareTo(conta.getSaldo()) > 0) {
                     System.out.println("VALOR DO SAQUE MAIOR QUE O DISPONIVEL NA CONTA");
@@ -85,10 +69,8 @@ public class Acoes {
             if (conta.getStatus() == Status.FECHADA) {
                 System.out.println("CONTA FECHADA, IMPOSSIVEL REALIZAR UM DEPOSITO");
             } else {
-                Scanner sc = new Scanner(System.in);
                 System.out.println("QUANTO DESEJA DEPOSITAR: ");
-                BigDecimal deposito = sc.nextBigDecimal();
-
+                BigDecimal deposito = getDeposito();
                 BigDecimal novoSaldo = deposito.add(conta.getSaldo());
                 conta.setSaldo(novoSaldo);
                 System.out.println("DEPOSITO REALIZADO");
@@ -102,15 +84,14 @@ public class Acoes {
         }else {
             int i1 = getInfo();
             int i2 = getInfo();
-
             ContaBancaria conta1 = listaContas.get(i1);
             ContaBancaria conta2 = listaContas.get(i2);
+
             if (conta1.getStatus() == Status.FECHADA || conta2.getStatus() == Status.FECHADA) {
                 System.out.println("CONTA(S) FECHADA(S), IMPOSSIVEL REALIZAR UMA TRANSFERENCIA");
             } else {
-                Scanner sc = new Scanner(System.in);
                 System.out.println("QUANTO DESEJA TRANSFERIR DA 1 CONTA PARA A 2: ");
-                BigDecimal transferencia = sc.nextBigDecimal();
+                BigDecimal transferencia = getTransferencia();
 
                 if (transferencia.compareTo(conta1.getSaldo()) > 0) {
                     System.out.println("VALOR DA TRANSFERENCIA MAIOR QUE O DISPONIVEL NA CONTA");
@@ -129,9 +110,7 @@ public class Acoes {
         if (listaContas.isEmpty()) {
             System.out.println("SEM CONTAS CADASTRADAS");
         } else {
-            for (int c = 0; c < listaContas.size(); c++) {
-                ContaBancaria conta = listaContas.get(c);
-
+            for (ContaBancaria conta : listaContas) {
                 System.out.println("-------------------");
                 System.out.println("AGENCIA: " + conta.getAgencia());
                 System.out.println("CONTA: " + conta.getNumeroConta());
@@ -143,8 +122,3 @@ public class Acoes {
         }
     }
 }
-
-
-
-
-
