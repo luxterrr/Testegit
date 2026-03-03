@@ -1,88 +1,65 @@
 package exercicio2ewerton;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Saque2 {
-    BigDecimal valorDisponivel = new BigDecimal("0");
-    BigDecimal valorTroco = new BigDecimal("0");
+
+    Map<BigDecimal, Integer> dinheiro = new LinkedHashMap<>();
+    
+    public Saque2 () {
+
+        dinheiro.put (BigDecimal.valueOf(200), 1);
+        dinheiro.put (BigDecimal.valueOf(100), 1);
+        dinheiro.put (BigDecimal.valueOf(50), 1);
+        dinheiro.put (BigDecimal.valueOf(20), 1);
+        dinheiro.put (BigDecimal.valueOf(10), 1);
+        dinheiro.put (BigDecimal.valueOf(5), 1);
+        dinheiro.put (BigDecimal.valueOf(2), 1);
+        dinheiro.put (BigDecimal.valueOf(1), 1);
+        dinheiro.put (BigDecimal.valueOf(0.5), 1);
+        dinheiro.put (BigDecimal.valueOf(0.25), 1);
+        dinheiro.put (BigDecimal.valueOf(0.10), 1);
+        dinheiro.put (BigDecimal.valueOf(0.05), 1);
+        dinheiro.put (BigDecimal.valueOf(0.01), 1);
+    }
 
     public void sacar() {
-
-        System.out.print("VALOR A SACAR: R$ ");
-
-        Scanner resposta = new Scanner(System.in);
-        BigDecimal valorSaque = resposta.nextBigDecimal();
-        resposta.close();
-
-        valorSaque = valorSaque.setScale(2, RoundingMode.HALF_EVEN);
-
+        BigDecimal valorSaque = ScannerValor.scanear();
         if (valorSaque.compareTo(BigDecimal.valueOf(0)) <= 0) {
             System.out.println("ERRO, O VALOR DO SAQUE DEVE SER MAIOR QUE 0");
-            System.exit(0);
-        }
-        calcular(valorSaque);
 
+        }
+        Map<BigDecimal, Integer>cedulasSaque = calcular(valorSaque);
+        exibirCedulas(cedulasSaque);
     }
-    public void calcular(BigDecimal valorSaque){
 
-        Map<BigDecimal, BigDecimal> dinheiro = new LinkedHashMap<>();
+    public Map<BigDecimal, Integer> calcular(BigDecimal valorSaque){
+        Map<BigDecimal, Integer> cedulasSaque = new LinkedHashMap<>();
+        BigDecimal valorResto = new BigDecimal(String.valueOf(valorSaque));
 
-        dinheiro.put (BigDecimal.valueOf(200), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(100), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(50), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(20), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(10), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(5), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(2), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(1), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(0.5), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(0.25), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(0.10), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(0.05), BigDecimal.valueOf(1));
-        dinheiro.put (BigDecimal.valueOf(0.01), BigDecimal.valueOf(1));
+        for (Map.Entry<BigDecimal, Integer> entry : dinheiro.entrySet()){
+            if (entry.getValue() == 0) continue;
 
-        BigDecimal valorResto = valorSaque;
+            Integer quantidade = valorResto.divide(entry.getKey()).intValue();
+            if (quantidade == 0)continue;
 
-        for (Map.Entry<BigDecimal, BigDecimal> entry : dinheiro.entrySet()){
-            valorDisponivel = valorDisponivel.add(entry.getKey().multiply(entry.getValue()));
-            if (valorResto.compareTo(entry.getKey())>=0){
-                valorTroco = valorTroco.add(entry.getKey().multiply(entry.getValue()));
-                valorResto = valorResto.subtract(entry.getKey().multiply(entry.getValue()));
-            }
+            if (quantidade > entry.getValue()) quantidade = entry.getValue();
+
+            valorResto = valorResto.subtract(entry.getKey().multiply(BigDecimal.valueOf(quantidade)));
+            cedulasSaque.put(entry.getKey(),quantidade);
         }
-        if (valorSaque.compareTo(valorDisponivel)>0) {
-            System.out.println("ERRO, VALOR DO SAQUE MAIOR QUE VALOR DISPONIVEL");
-            System.exit(0);
-        } else if (valorSaque.compareTo(valorTroco)>0) {
-            System.out.println("ERRO,VALOR DO SAQUE MAIOR QUE VALOR PARA TROCO");
-            System.exit(0);
+        if (valorResto.compareTo(BigDecimal.ZERO) > 0) {
+            System.out.println("QUANTIDADE DE ESPECIES INSUFICIENTE PARA VALOR SAQUE");
+            return new LinkedHashMap<>();
         }
+        return cedulasSaque;
+    }
 
-
-        for (Map.Entry<BigDecimal, BigDecimal> entry : dinheiro.entrySet()) {
-            if ( entry.getValue().compareTo(BigDecimal.valueOf(0))==0)continue;
-            BigDecimal quantidade = valorSaque.divide(entry.getKey(), 0, RoundingMode.DOWN);
-
-            if (quantidade.compareTo(BigDecimal.valueOf(0))>0) {
-                if (quantidade.compareTo(entry.getValue())>0) {
-                    quantidade = quantidade.subtract( quantidade.subtract(entry.getValue()));
-                }
-                valorSaque = valorSaque.subtract(quantidade.multiply(entry.getKey()));
-                if (entry.getKey().compareTo(BigDecimal.valueOf(2))>=0) {
-                    System.out.println("CEDULAS DE " + entry.getKey()  + ": " + quantidade);
-                } else {
-                    System.out.println("MOEDAS DE " + entry.getKey()  + ": " + quantidade);
-                }
-
-            }
-
+    public void exibirCedulas(Map<BigDecimal, Integer> cedulasSaque) {
+        for (Map.Entry<BigDecimal,Integer> cedula: cedulasSaque.entrySet()) {
+            System.out.println(cedula.getValue() + "CEDULA/MOEDA DE " + cedula.getKey());
         }
-            System.out.println("GG");
-
-
     }
 }
