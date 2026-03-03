@@ -1,6 +1,8 @@
 package EX03EWERTON;
 
 import java.math.BigDecimal;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
 
 import static EX03EWERTON.ContaBancaria.getInfo;
@@ -8,7 +10,6 @@ import static EX03EWERTON.ContaBancaria.listaContas;
 
 
 public class Acoes {
-
 
     public static void abrirConta() {
         System.out.println("--ABERTURA DE CONTA--");
@@ -22,9 +23,16 @@ public class Acoes {
         System.out.print("Nome      : ");
         String nome = sc.next();
 
+        Optional<ContaBancaria> contido = ContaBancaria.listaContas.stream()
+                .filter(contaBancaria -> Objects.equals(contaBancaria.getAgencia(), agencia) && Objects.equals(contaBancaria.getNumeroConta(), numeroConta))
+                .findFirst();
+        if (contido.isPresent()) {
+            System.out.println("ERRO NO CADASTRO: CONTA JA EXISTENTE, MUDE O NUMERO DA CONTA OU AGENCIA");
+        } else {
             ContaBancaria.listaContas.add(new ContaBancaria(nome, agencia, numeroConta, saldo, Status.ABERTA));
             System.out.println("CONTA ABERTA");
         }
+    }
 
     public static void fecharConta() {
         if (listaContas.isEmpty()) {
@@ -100,7 +108,6 @@ public class Acoes {
             if (conta1.getStatus() == Status.FECHADA || conta2.getStatus() == Status.FECHADA) {
                 System.out.println("CONTA(S) FECHADA(S), IMPOSSIVEL REALIZAR UMA TRANSFERENCIA");
             } else {
-
                 Scanner sc = new Scanner(System.in);
                 System.out.println("QUANTO DESEJA TRANSFERIR DA 1 CONTA PARA A 2: ");
                 BigDecimal transferencia = sc.nextBigDecimal();
