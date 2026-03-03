@@ -1,8 +1,6 @@
 package EX03EWERTON;
 
 import java.math.BigDecimal;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Scanner;
 
 import static EX03EWERTON.ContaBancaria.getInfo;
@@ -24,16 +22,9 @@ public class Acoes {
         System.out.print("Nome      : ");
         String nome = sc.next();
 
-        Optional<ContaBancaria> contido = ContaBancaria.listaContas.stream()
-                .filter(contaBancaria -> Objects.equals(contaBancaria.getAgencia(), agencia) && Objects.equals(contaBancaria.getNumeroConta(), numeroConta))
-                .findFirst();
-        if (contido.isPresent()) {
-            System.out.println("ERRO NO CADASTRO: CONTA JA EXISTENTE, MUDE O NUMERO DA CONTA OU AGENCIA");
-        } else {
             ContaBancaria.listaContas.add(new ContaBancaria(nome, agencia, numeroConta, saldo, Status.ABERTA));
             System.out.println("CONTA ABERTA");
         }
-    }
 
     public static void fecharConta() {
         if (listaContas.isEmpty()) {
